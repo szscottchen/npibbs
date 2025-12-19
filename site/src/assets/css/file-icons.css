@@ -1,0 +1,74 @@
+/* 文件类型图标库 - 使用高质量SVG图标（真正直观的方案） */
+.file-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* 文件链接包装器样式 */
+.file-link-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 16px;
+  margin-bottom: 8px;
+}
+
+/* Word文档图标 - 蓝色W图标 */
+.file-icon-word {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23185abd" stroke-width="1.5"/><text x="12" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="%23185abd">W</text></svg>');
+}
+
+/* Excel表格图标 - 绿色表格图标 */
+.file-icon-excel {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23107c41" stroke-width="1.5"/><rect x="6" y="8" width="12" height="2" fill="%23107c41"/><rect x="6" y="11" width="12" height="2" fill="%23107c41"/><rect x="6" y="14" width="12" height="2" fill="%23107c41"/></svg>');
+}
+
+/* PowerPoint演示文稿图标 - 橙色幻灯片图标 */
+.file-icon-ppt {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23d24726" stroke-width="1.5"/><rect x="6" y="6" width="12" height="10" rx="1" fill="%23d24726"/><rect x="8" y="8" width="8" height="6" fill="%23ffffff"/></svg>');
+}
+
+/* PDF文档图标 - 红色PDF图标 */
+.file-icon-pdf {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23e52e2e" stroke-width="1.5"/><text x="12" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="%23e52e2e">PDF</text></svg>');
+}
+
+/* 文本文件图标 - 灰色文本图标 */
+.file-icon-text {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23666" stroke-width="1.5"/><rect x="6" y="8" width="12" height="1" fill="%23666"/><rect x="6" y="10" width="10" height="1" fill="%23666"/><rect x="6" y="12" width="8" height="1" fill="%23666"/><rect x="6" y="14" width="12" height="1" fill="%23666"/></svg>');
+}
+
+/* 压缩文件图标 - 黄色拉链图标 */
+.file-icon-zip {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23f59e0b" stroke-width="1.5"/><rect x="6" y="6" width="12" height="12" fill="%23f59e0b" opacity="0.2"/><rect x="8" y="8" width="8" height="8" fill="%23f59e0b" opacity="0.4"/><rect x="10" y="10" width="4" height="4" fill="%23f59e0b"/></svg>');
+}
+
+/* 图片文件图标 - 紫色图片图标 */
+.file-icon-image {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%239c27b0" stroke-width="1.5"/><rect x="6" y="6" width="12" height="8" rx="1" fill="%239c27b0" opacity="0.3"/><circle cx="12" cy="10" r="2" fill="%239c27b0"/><rect x="8" y="14" width="8" height="2" fill="%239c27b0"/></svg>');
+}
+
+/* 音频文件图标 - 橙色音频图标 */
+.file-icon-audio {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23ff6d00" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="%23ff6d00" opacity="0.3"/><path d="M10 8 L10 16 M12 6 L12 18 M14 9 L14 15" stroke="%23ff6d00" stroke-width="2" stroke-linecap="round"/></svg>');
+}
+
+/* 视频文件图标 - 红色视频图标 */
+.file-icon-video {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23d50000" stroke-width="1.5"/><rect x="6" y="6" width="12" height="8" rx="1" fill="%23d50000" opacity="0.3"/><polygon points="10,10 16,12 10,14" fill="%23d50000"/></svg>');
+}
+
+/* 代码文件图标 - 蓝色代码图标 */
+.file-icon-code {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23007acc" stroke-width="1.5"/><path d="M8 9 L6 12 L8 15 M16 9 L18 12 L16 15 M10 7 L14 17" stroke="%23007acc" stroke-width="2" stroke-linecap="round"/></svg>');
+}
+
+/* 默认文件图标 - 灰色默认图标 */
+.file-icon-default {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23ffffff" stroke="%23999" stroke-width="1.5"/><rect x="6" y="6" width="12" height="12" fill="%23999" opacity="0.2"/><rect x="8" y="8" width="8" height="8" fill="%23999" opacity="0.4"/><rect x="10" y="10" width="4" height="4" fill="%23999"/></svg>');
+}

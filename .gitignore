@@ -1,0 +1,10 @@
+.idea
+dist
+*.log
+.DS_Store
+node_modules
+.nuxt
+.docker-compose/mysql/data
+server/temp/
+server/logs/
+.md

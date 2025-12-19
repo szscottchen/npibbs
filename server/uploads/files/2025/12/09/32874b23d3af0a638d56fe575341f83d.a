@@ -1,0 +1,56 @@
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/xuri/excelize/v2"
+)
+
+func main() {
+	// Excel文件路径
+	filePath := "EXCEL测试.xlsx"
+	
+	fmt.Printf("正在读取Excel文件: %s\n", filePath)
+	
+	// 1. 打开Excel文件
+	f, err := excelize.OpenFile(filePath)
+	if err != nil {
+		log.Fatalf("打开Excel文件失败: %v", err)
+	}
+	defer f.Close()
+
+	// 2. 读取所有Sheet
+	sheets := f.GetSheetList()
+	fmt.Printf("工作表数量: %d\n", len(sheets))
+	
+	if len(sheets) == 0 {
+		log.Fatal("Excel文件中没有工作表")
+	}
+
+	// 3. 读取第一个Sheet的所有行
+	rows, err := f.GetRows(sheets[0])
+	if err != nil {
+		log.Fatalf("读取Excel数据失败: %v", err)
+	}
+
+	// 4. 输出调试信息
+	fmt.Printf("总行数: %d\n", len(rows))
+	fmt.Printf("工作表名称: %s\n", sheets[0])
+	
+	// 5. 输出每行的内容
+	for i, row := range rows {
+		fmt.Printf("第%d行: 列数=%d, 内容=%v\n", i+1, len(row), row)
+	}
+
+	// 6. 检查是否有数据行
+	if len(rows) <= 1 {
+		log.Fatalf("Excel文件中没有数据行，实际读取到%d行", len(rows))
+	}
+
+	fmt.Println("Excel文件读取成功！")
+	fmt.Printf("表头: %v\n", rows[0])
+	if len(rows) > 1 {
+		fmt.Printf("第一行数据: %v\n", rows[1])
+	}
+}

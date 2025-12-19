@@ -1,0 +1,92 @@
+<template>
+  <div v-if="scoreRank && scoreRank.length" class="widget">
+    <div class="widget-header">
+      <span class="widget-title">{{ $t("component.scoreRank.title") }}</span>
+    </div>
+    <div class="widget-content">
+      <ul class="score-rank">
+        <li v-for="user in scoreRank" :key="user.id">
+          <my-avatar :user="user" :size="35" />
+          <div class="score-user-info">
+            <nuxt-link :to="'/user/' + user.id" class="score-nickname">{{
+              user.nickname
+            }}</nuxt-link>
+            <p class="score-desc">
+              {{ user.topicCount }} {{ $t("component.scoreRank.topic") }}
+              •
+              {{ user.commentCount }} {{ $t("component.scoreRank.comment") }}
+            </p>
+          </div>
+          <div class="score-rank-info" style="width: 60px;">
+            <span class="score-user-score">
+              <i class="iconfont icon-score" /><span>{{ user.score }}</span>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script setup>
+const { data: scoreRank } = await useMyFetch("/api/user/score/rank");
+</script>
+
+<style scoped lang="scss">
+.score-rank {
+  li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    list-style: none;
+    font-size: 13px;
+    position: relative;
+    padding: 6px 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--border-color4);
+    }
+
+    .score-user-info {
+      width: 100%;
+      margin-left: 9px;
+      line-height: 1.2;
+      font-size: 12px;
+      .score-nickname {
+        font-size: 14px;
+        color: var(--text-color);
+        line-height: 14px;
+
+        &:hover {
+          color: rgba(0, 166, 244, 0.8);
+        }
+      }
+      .score-desc {
+        font-size: 11px;
+        color: var(--text-color3);
+        line-height: 20px;
+        display: block;
+      }
+    }
+
+    .score-rank-info {
+      width: 120px;
+      .score-user-score {
+        float: right;
+        border-radius: 12px;
+        color: var(--text-color3);
+        height: 18px;
+        line-height: 18px;
+        padding: 0 6px;
+        text-shadow: 0 0 1px #fff;
+        background-color: var(--bg-color2);
+        font-size: 12px;
+        align-items: center;
+        i {
+          margin-right: 3px;
+        }
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件类型图标库演示 - File Icons Demo</title>
+    <link rel="stylesheet" href="file-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/file-icons/1.0.0/file-icons.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin: 0;
+        }
+        
+        .category {
+            margin-bottom: 40px;
+        }
+        
+        .category h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+        
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .icon-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .icon-item:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+        }
+        
+        .icon-preview {
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .icon-info {
+            flex: 1;
+        }
+        
+        .icon-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+        
+        .icon-extensions {
+            color: #7f8c8d;
+            font-size: 0.85em;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .usage-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 6px;
+            margin-top: 40px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .usage-section h3 {
+            color: #27ae60;
+            margin-top: 0;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📁 文件类型图标库演示</h1>
+            <p>展示所有支持的文件类型图标及其扩展名</p>
+        </div>
+
+        <!-- 办公文档 -->
+        <div class="category">
+            <h2>📄 办公文档</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-word"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">Word文档</div>
+                        <div class="icon-extensions">.doc .docx</div>
+                    </div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-excel"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">Excel表格</div>
+                        <div class="icon-extensions">.xls .xlsx .csv</div>
+                    </div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-ppt"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">PowerPoint演示</div>
+                        <div class="icon-extensions">.ppt .pptx</div>
+                    </div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-pdf"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">PDF文档</div>
+                        <div class="icon-extensions">.pdf</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文本文件 -->
+        <div class="category">
+            <h2>📝 文本文件</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-text"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">文本文件</div>
+                        <div class="icon-extensions">.txt .log .md</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 压缩文件 -->
+        <div class="category">
+            <h2>📦 压缩文件</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-zip"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">压缩文件</div>
+                        <div class="icon-extensions">.zip .rar .7z .tar .gz</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图片文件 -->
+        <div class="category">
+            <h2>🖼️ 图片文件</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-image"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">图片文件</div>
+                        <div class="icon-extensions">.jpg .jpeg .png .gif .bmp .webp .svg</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 音频文件 -->
+        <div class="category">
+            <h2>🎵 音频文件</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-audio"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">音频文件</div>
+                        <div class="icon-extensions">.mp3 .wav .flac .aac .ogg</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 视频文件 -->
+        <div class="category">
+            <h2>🎬 视频文件</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-video"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">视频文件</div>
+                        <div class="icon-extensions">.mp4 .avi .mkv .mov .wmv .flv</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 代码文件 -->
+        <div class="category">
+            <h2>💻 代码文件</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-code"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">代码文件</div>
+                        <div class="icon-extensions">.html .css .js .ts .json .xml .py .java .cpp .c .php .go .rb .sql</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 默认图标 -->
+        <div class="category">
+            <h2>📎 默认图标</h2>
+            <div class="icons-grid">
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <i class="file-icon file-icon-default"></i>
+                    </div>
+                    <div class="icon-info">
+                        <div class="icon-name">默认文件</div>
+                        <div class="icon-extensions">其他所有文件类型</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用说明 -->
+        <div class="usage-section">
+            <h3>🔧 使用方法</h3>
+            <p><strong>HTML 使用示例：</strong></p>
+            <div class="code-block">
+&lt;span class="file-link-wrapper"&gt;
+    &lt;i class="file-icon file-icon-excel"&gt;&lt;/i&gt;
+    &lt;a href="/uploads/files/document.xlsx"&gt;财务报表.xlsx&lt;/a&gt;
+&lt;/span&gt;
+            </div>
+            
+            <p><strong>Vue.js 使用示例：</strong></p>
+            <div class="code-block">
+&lt;span class="file-link-wrapper"&gt;
+    &lt;i class="file-icon" :class="getFileIconClass(file)"&gt;&lt;/i&gt;
+    &lt;a :href="file.url"&gt;{{ file.name }}&lt;/a&gt;
+&lt;/span&gt;
+            </div>
+            
+            <p><strong>JavaScript 函数调用：</strong></p>
+            <div class="code-block">
+// 获取文件图标类名
+const iconClass = getFileIconClass(fileObject);
+// 返回示例："file-icon file-icon-word"
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>文件类型图标库 - 基于SVG实现，完全本地化，无需网络连接</p>
+            <p>支持 30+ 种文件类型扩展名</p>
+        </div>
+    </div>
+</body>
+</html>
