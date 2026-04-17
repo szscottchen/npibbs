@@ -144,7 +144,7 @@ func InitDB() error {
 		Logger: logger.New(log.New(os.Stdout, "", log.LstdFlags), logger.Config{
 			SlowThreshold:             200 * time.Millisecond,
 			LogLevel:                  logger.Info,
-			IgnoreRecordNotFoundError: false,
+			IgnoreRecordNotFoundError: true,
 			Colorful:                  true,
 		}),
 	})
@@ -230,6 +230,9 @@ func InitData(req InstallReq) error {
 	}
 	uploadConfigJson := jsons.ToJsonStr(defaultUploadConfig)
 	services.SysConfigService.Set(constants.SysConfigUploadConfig, uploadConfigJson)
+
+	// 初始化企业微信配置（从配置文件同步到数据库）
+	_ = services.WeComService.InitConfig()
 
 	return nil
 }

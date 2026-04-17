@@ -1,11 +1,13 @@
 package repositories
 
 import (
+	"bbs-go/internal/models"
+	"bbs-go/internal/models/constants"
+	"time"
+
 	"github.com/mlogclub/simple/sqls"
 	"github.com/mlogclub/simple/web/params"
 	"gorm.io/gorm"
-
-	"bbs-go/internal/models"
 )
 
 var CommentRepository = newCommentRepository()
@@ -88,4 +90,34 @@ func (r *commentRepository) UpdateColumn(db *gorm.DB, id int64, name string, val
 
 func (r *commentRepository) Delete(db *gorm.DB, id int64) {
 	db.Delete(&models.Comment{}, "id = ?", id)
+}
+
+// GetUnsummarizedComments 获取未总结的评论
+func (r *commentRepository) GetUnsummarizedComments(db *gorm.DB, topicId int64) ([]models.Comment, int) {
+	var comments []models.Comment
+	err := db.Where("entity_type = ? AND entity_id = ? AND ai_sum IS NULL",
+		constants.EntityTopic, topicId).
+		Preload("User").
+		Order("id ASC").
+		Find(&comments).Error
+
+	if err != nil {
+		return nil, 0
+	}
+
+	// 计算总字符数
+	totalChars := 0
+	for _, comment := range comments {
+		totalChars += len(comment.Content)
+	}
+
+	return comments, totalChars
+}
+
+// MarkCommentsAsSummarized 标记评论为已总结
+func (r *commentRepository) MarkCommentsAsSummarized(db *gorm.DB, topicId int64) error {
+	return db.Model(&models.Comment{}).
+		Where("entity_type = ? AND entity_id = ? AND ai_sum IS NULL",
+			constants.EntityTopic, topicId).
+		Update("ai_sum", time.Now()).Error
 }

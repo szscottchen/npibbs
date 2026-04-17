@@ -11,17 +11,28 @@ AllowedOrigins:
   - "*"
 Installed: false # 是否已完成安装
 
+# 企业微信配置（存储在系统配置表中）
+WeCom:
+  Enabled: true
+  CorpId: "wxab3a4f1b8227d142"
+  Secret: "bdPDjSbVBbiUkCzacjCJZYqid1n4QkPc5OXdEq0wG7w"
+  AgentId: "1000157"
+  RedirectUri: "http://tkdevbbs.tkmold.com"
+
+
 # 日志配置
 Logger:
-  Filename: /data/logs/bbs-go.log   # 日志文件的位置
+  Filename: /app/bbs-go/logs/tkdev.log   # 日志文件的位置
   MaxSize: 100                      # 文件最大尺寸（以MB为单位）
   MaxAge: 10                        # 保留旧文件的最大天数
   MaxBackups: 10                    # 保留的最大旧文件数量
 
 
 # 数据库连接
+# Docker环境：如果数据库在宿主机，使用 host.docker.internal:3306
+# 或者使用主机网络模式，直接连接 localhost:3306
 DB:
-  Url: username:password@tcp(localhost:3306)/bbsgo_db?charset=utf8mb4&parseTime=True&multiStatements=true&loc=Local
+  Url: bbsgo:Tk*935920@tcp(localhost:3306)/bbsgo_dev?charset=utf8mb4&parseTime=True&multiStatements=true&loc=Local
   MaxIdleConns: 50
   MaxOpenConns: 200
 
@@ -71,3 +82,11 @@ SmSEO:
 # search
 Search:
   IndexPath: # 索引路径
+
+AI:
+	Enabled: true      # 是否启用AI服务
+	Provider:      # AI服务提供商：openai、azure、deepseek
+	APIKey:        # API密钥
+	Model:         # 模型名称
+	Endpoint:      # 端点地址（Azure专用）
+	APIVersion:    # API版本（Azure专用）

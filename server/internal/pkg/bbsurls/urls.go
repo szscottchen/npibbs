@@ -58,18 +58,18 @@ func UrlJoin(parts ...string) string {
 	if len(parts) == 0 {
 		return ""
 	}
-	
+
 	sep := "/"
 	var ss []string
-	
+
 	for i, part := range parts {
 		part = strings.TrimSpace(part)
-		
+
 		// Skip empty parts
 		if part == "" {
 			continue
 		}
-		
+
 		// Special handling for the first part (usually BaseURL)
 		if i == 0 {
 			// If it's root path, add an empty string to represent leading slash correctly
@@ -99,15 +99,15 @@ func UrlJoin(parts ...string) string {
 			}
 		}
 	}
-	
+
 	// Join all parts with slash
 	result := strings.Join(ss, sep)
-	
+
 	// Ensure root path is displayed as "/"
 	if result == "" {
 		return "/"
 	}
-	
+
 	return result
 }
 
@@ -115,12 +115,12 @@ func UrlJoin(parts ...string) string {
 func TestUrlJoin() string {
 	// 测试案例1: baseURL为"/"的情况
 	result1 := UrlJoin("/", "uploads/images/2025/11/17/test.jpg")
-	
+
 	// 测试案例2: baseURL为"http://localhost:8082/"的情况
 	result2 := UrlJoin("http://localhost:8082/", "uploads/images/2025/11/17/test.jpg")
-	
+
 	// 测试案例3: baseURL为"http://localhost:8082"的情况（没有结尾斜杠）
 	result3 := UrlJoin("http://localhost:8082", "uploads/images/2025/11/17/test.jpg")
-	
+
 	return "Test 1 (/): " + result1 + "\nTest 2 (http://localhost:8082/): " + result2 + "\nTest 3 (http://localhost:8082): " + result3
 }

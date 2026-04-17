@@ -12,7 +12,7 @@ var Models = []interface{}{
 	&User{}, &UserToken{}, &Tag{}, &Article{}, &ArticleTag{}, &Comment{}, &Favorite{}, &Topic{}, &TopicNode{},
 	&TopicTag{}, &UserLike{}, &Message{}, &SysConfig{}, &Link{},
 	&UserScoreLog{}, &OperateLog{}, &EmailCode{}, &CheckIn{}, &UserFollow{}, &UserFeed{}, &UserReport{},
-	&ForbiddenWord{},
+	&ForbiddenWord{}, &AISum{},
 }
 
 type Model struct {
@@ -47,6 +47,7 @@ type User struct {
 	BDepartment      string           `gorm:"size:40" json:"bDepartment" form:"bDepartment"`                           // 业务单位
 	Jobposition      string           `gorm:"size:20" json:"jobposition" form:"jobposition"`                           // 工作岗位
 	CommunityRole    string           `gorm:"size:20" json:"communityRole" form:"communityRole"`                       // 社区角色
+	WeComUserId      string           `gorm:"column:we_com_user_id;size:64" json:"wecomUserId" form:"wecomUserId"`     // 企业微信用户ID
 	CreateTime       int64            `json:"createTime" form:"createTime"`                                            // 创建时间
 	UpdateTime       int64            `json:"updateTime" form:"updateTime"`                                            // 更新时间
 }
@@ -101,19 +102,21 @@ type ArticleTag struct {
 type Comment struct {
 	Model
 	UserId       int64                 `gorm:"index:idx_comment_user_id;not null" json:"userId" form:"userId"`                     // 用户编号
+	User         *User                 `gorm:"foreignKey:UserId;references:Id" json:"user,omitempty"`                              // 用户
 	EntityType   string                `gorm:"size:64;index:idx_comment_entity_type;not null" json:"entityType" form:"entityType"` // 被评论实体类型
 	EntityId     int64                 `gorm:"index:idx_comment_entity_id;not null" json:"entityId" form:"entityId"`               // 被评论实体编号
 	Content      string                `gorm:"type:text;not null" json:"content" form:"content"`                                   // 内容
 	ImageList    string                `gorm:"type:longtext" json:"imageList" form:"imageList"`                                    // 图片
 	ContentType  constants.ContentType `gorm:"type:varchar(32);not null" json:"contentType" form:"contentType"`                    // 内容类型：markdown、html
-	QuoteId      int64                 `gorm:"not null"  json:"quoteId" form:"quoteId"`                                            // 引用的评论编号
+	QuoteId      int64                 `gorm:"not null;default:0" json:"quoteId" form:"quoteId"`                                   // 引用的评论编号
 	LikeCount    int64                 `gorm:"not null;default:0" json:"likeCount" form:"likeCount"`                               // 点赞数量
 	CommentCount int64                 `gorm:"not null;default:0" json:"commentCount" form:"commentCount"`                         // 评论数量
 	UserAgent    string                `gorm:"size:1024" json:"userAgent" form:"userAgent"`                                        // UserAgent
 	Ip           string                `gorm:"size:128" json:"ip" form:"ip"`                                                       // IP
 	IpLocation   string                `gorm:"size:64" json:"ipLocation" form:"ipLocation"`                                        // IP属地
 	Status       int                   `gorm:"type:int(11);index:idx_comment_status" json:"status" form:"status"`                  // 状态：0：待审核、1：审核通过、2：审核失败、3：已发布
-	Valuable     string                `gorm:"size:16;default:'';index:idx_comment_valuable" json:"valuable" form:"valuable"`   // 价值标识，空字符串表示无价值
+	Valuable     string                `gorm:"size:16;default:'';index:idx_comment_valuable" json:"valuable" form:"valuable"`      // 价值标识，空字符串表示无价值
+	AISum        *time.Time            `gorm:"index:idx_comment_ai_sum" json:"aiSum" form:"aiSum"`                                 // AI总结时间
 	CreateTime   int64                 `json:"createTime" form:"createTime"`                                                       // 创建时间
 }
 
@@ -140,29 +143,29 @@ type TopicNode struct {
 // 话题节点
 type Topic struct {
 	Model
-	Type              constants.TopicType   `gorm:"type:int(11);not null:default:0" json:"type" form:"type"`                         // 类型
-	NodeId            int64                 `gorm:"not null;index:idx_node_id;" json:"nodeId" form:"nodeId"`                         // 节点编号
-	UserId            int64                 `gorm:"not null;index:idx_topic_user_id;" json:"userId" form:"userId"`                   // 用户
-	Title             string                `gorm:"size:128" json:"title" form:"title"`                                              // 标题
-	ContentType       constants.ContentType `gorm:"size:32;default:markdown" json:"contentType" form:"contentType"`                  // 内容类型（html/markdown）
-	Content           string                `gorm:"type:longtext" json:"content" form:"content"`                                     // 内容
-	ImageList         string                `gorm:"type:longtext" json:"imageList" form:"imageList"`                                 // 图片
-	HideContent       string                `gorm:"type:longtext" json:"hideContent" form:"hideContent"`                             // 回复可见内容
-	Recommend         bool                  `gorm:"not null;index:idx_recommend" json:"recommend" form:"recommend"`                  // 是否推荐
-	RecommendTime     int64                 `gorm:"not null" json:"recommendTime" form:"recommendTime"`                              // 推荐时间
-	Sticky            bool                  `gorm:"not null;index:idx_sticky_sticky_time" json:"sticky" form:"sticky"`               // 置顶
-	StickyTime        int64                 `gorm:"not null;index:idx_sticky_sticky_time" json:"stickyTime" form:"stickyTime"`       // 置顶时间
-	ViewCount         int64                 `gorm:"not null" json:"viewCount" form:"viewCount"`                                      // 查看数量
-	CommentCount      int64                 `gorm:"not null" json:"commentCount" form:"commentCount"`                                // 跟帖数量
-	LikeCount         int64                 `gorm:"not null" json:"likeCount" form:"likeCount"`                                      // 点赞数量
-	Status            int                   `gorm:"type:int(11);index:idx_topic_status;" json:"status" form:"status"`                // 状态：0：正常、1：删除
-	LastCommentTime   int64                 `gorm:"index:idx_topic_last_comment_time" json:"lastCommentTime" form:"lastCommentTime"` // 最后回复时间
-	LastCommentUserId int64                 `json:"lastCommentUserId" form:"lastCommentUserId"`                                      // 最后回复用户
-	UserAgent         string                `gorm:"size:1024" json:"userAgent" form:"userAgent"`                                     // UserAgent
-	Ip                string                `gorm:"size:128" json:"ip" form:"ip"`                                                    // IP
-	IpLocation        string                `gorm:"size:64" json:"ipLocation" form:"ipLocation"`                                     // IP属地
-	CreateTime        int64                 `gorm:"index:idx_topic_create_time" json:"createTime" form:"createTime"`                 // 创建时间
-	ExtraData         string                `gorm:"type:text" json:"extraData" form:"extraData"`                                     // 扩展数据
+	Type              constants.TopicType   `gorm:"type:int(11);not null:default:0" json:"type" form:"type"`                          // 类型
+	NodeId            int64                 `gorm:"not null;index:idx_node_id;" json:"nodeId" form:"nodeId"`                          // 节点编号
+	UserId            int64                 `gorm:"not null;index:idx_topic_user_id;" json:"userId" form:"userId"`                    // 用户
+	Title             string                `gorm:"size:128" json:"title" form:"title"`                                               // 标题
+	ContentType       constants.ContentType `gorm:"size:32;default:markdown" json:"contentType" form:"contentType"`                   // 内容类型（html/markdown）
+	Content           string                `gorm:"type:longtext" json:"content" form:"content"`                                      // 内容
+	ImageList         string                `gorm:"type:longtext" json:"imageList" form:"imageList"`                                  // 图片
+	HideContent       string                `gorm:"type:longtext" json:"hideContent" form:"hideContent"`                              // 回复可见内容
+	Recommend         bool                  `gorm:"not null;index:idx_recommend" json:"recommend" form:"recommend"`                   // 是否推荐
+	RecommendTime     int64                 `gorm:"not null" json:"recommendTime" form:"recommendTime"`                               // 推荐时间
+	Sticky            bool                  `gorm:"not null;index:idx_sticky_sticky_time" json:"sticky" form:"sticky"`                // 置顶
+	StickyTime        int64                 `gorm:"not null;index:idx_sticky_sticky_time" json:"stickyTime" form:"stickyTime"`        // 置顶时间
+	ViewCount         int64                 `gorm:"not null" json:"viewCount" form:"viewCount"`                                       // 查看数量
+	CommentCount      int64                 `gorm:"not null" json:"commentCount" form:"commentCount"`                                 // 跟帖数量
+	LikeCount         int64                 `gorm:"not null" json:"likeCount" form:"likeCount"`                                       // 点赞数量
+	Status            int                   `gorm:"type:int(11);index:idx_topic_status;" json:"status" form:"status"`                 // 状态：0：正常、1：删除
+	LastCommentTime   int64                 `gorm:"index:idx_topic_last_comment_time" json:"lastCommentTime" form:"lastCommentTime"`  // 最后回复时间
+	LastCommentUserId int64                 `json:"lastCommentUserId" form:"lastCommentUserId"`                                       // 最后回复用户
+	UserAgent         string                `gorm:"size:1024" json:"userAgent" form:"userAgent"`                                      // UserAgent
+	Ip                string                `gorm:"size:128" json:"ip" form:"ip"`                                                     // IP
+	IpLocation        string                `gorm:"size:64" json:"ipLocation" form:"ipLocation"`                                      // IP属地
+	CreateTime        int64                 `gorm:"index:idx_topic_create_time" json:"createTime" form:"createTime"`                  // 创建时间
+	ExtraData         string                `gorm:"type:text" json:"extraData" form:"extraData"`                                      // 扩展数据
 	NeedAHand         uint8                 `gorm:"not null;default:0;index:idx_topic_need_a_hand" json:"needAHand" form:"needAHand"` // 是否需要帮助：0：不需要、1：需要
 }
 
@@ -309,4 +312,36 @@ type ForbiddenWord struct {
 	Word       string `gorm:"size:128" json:"word" form:"word"`      // 违禁词
 	Remark     string `gorm:"size:1024" json:"remark" form:"remark"` // 备注
 	CreateTime int64  `json:"createTime" form:"createTime"`          // 举报时间
+}
+
+// AISum AI总结表
+type AISum struct {
+	Model
+	TopicId    int64     `gorm:"not null;index:idx_topic_id" json:"topicId" form:"topicId"`                          // 话题ID
+	SumTime    time.Time `gorm:"not null;index:idx_sum_time" json:"sumTime" form:"sumTime"`                          // 总结时间
+	SumContent string    `gorm:"type:text;not null" json:"sumContent" form:"sumContent"`                             // 总结内容
+	SumValid   string    `gorm:"type:enum('Y','N');default:'Y';index:idx_sum_valid" json:"sumValid" form:"sumValid"` // 有效标识
+
+	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updatedAt"`
+
+	// 关联关系
+	Topic *Topic `gorm:"foreignKey:TopicId" json:"topic,omitempty"`
+}
+
+// 表名
+func (AISum) TableName() string {
+	return "t_aisum"
+}
+
+// AISumResponse AI总结响应结构体
+type AISumResponse struct {
+	Id         int64     `json:"id"`
+	TopicId    int64     `json:"topicId"`
+	SumTime    time.Time `json:"sumTime"`
+	SumContent string    `json:"sumContent"`
+	SumValid   string    `json:"sumValid"`
+	CreatedAt  time.Time `json:"createdAt"`
+	UpdatedAt  time.Time `json:"updatedAt"`
+	TopicTitle string    `json:"topicTitle,omitempty"`
 }

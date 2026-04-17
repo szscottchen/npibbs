@@ -413,3 +413,5 @@ func (c *TopicController) GetHide_content() *web.JsonResult {
 		"content": hideContent,
 	})
 }
+
+

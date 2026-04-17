@@ -53,6 +53,7 @@ export default {
             failCount: '失败条数',
             rowNumber: '行号',
             employeeId: '员工编号',
+            weComUserId: '企业微信用户ID',
             nickname: '昵称',
             errorMessage: '错误信息',
         },

@@ -1,6 +1,9 @@
 package services
 
 import (
+	"fmt"
+	"log/slog"
+
 	"bbs-go/internal/cache"
 	"bbs-go/internal/models"
 	"bbs-go/internal/models/constants"
@@ -10,12 +13,12 @@ import (
 	"bbs-go/internal/pkg/locales"
 	"bbs-go/internal/pkg/msg"
 	"bbs-go/internal/repositories"
-	"log/slog"
 
 	"github.com/mlogclub/simple/common/dates"
 	"github.com/mlogclub/simple/common/jsons"
 	"github.com/mlogclub/simple/sqls"
 	"github.com/mlogclub/simple/web/params"
+	"github.com/tidwall/gjson"
 )
 
 var MessageService = newMessageService()
@@ -102,6 +105,7 @@ func (s *messageService) SendMsg(from, to int64, msgType msg.Type,
 		slog.Error(err.Error(), slog.Any("err", err))
 	} else {
 		s.SendEmailNotice(t)
+		s.SendWeComNotice(t)
 	}
 }
 
@@ -150,4 +154,92 @@ func (s *messageService) SendEmailNotice(t *models.Message) {
 	if err != nil {
 		slog.Error(err.Error(), slog.Any("err", err))
 	}
+}
+
+// SendWeComNotice 发送企业微信通知（触发红点提醒）
+func (s *messageService) SendWeComNotice(t *models.Message) {
+	msgType := msg.Type(t.Type)
+
+	// 话题被删除不发送企业微信提醒
+	if msgType == msg.TypeTopicDelete {
+		return
+	}
+
+	// 获取接收用户
+	user := cache.UserCache.Get(t.UserId)
+	if user == nil || user.WeComUserId == "" {
+		return
+	}
+
+	// 构建消息标题和内容
+	var (
+		siteTitle = cache.SysConfigCache.GetStr(constants.SysConfigSiteTitle)
+		title     string
+		desc      string
+		detailUrl string
+	)
+
+	switch msgType {
+	case msg.TypeTopicComment:
+		title = "收到新评论"
+		desc = fmt.Sprintf("%s：%s", t.Title, t.Content)
+		detailUrl = s.getMessageUrl(t)
+	case msg.TypeArticleComment:
+		title = "文章收到新评论"
+		desc = fmt.Sprintf("%s：%s", t.Title, t.Content)
+		detailUrl = s.getMessageUrl(t)
+	case msg.TypeCommentReply:
+		title = "收到新回复"
+		desc = fmt.Sprintf("%s：%s", t.Title, t.Content)
+		detailUrl = s.getMessageUrl(t)
+	case msg.TypeTopicLike:
+		title = "收到新点赞"
+		desc = fmt.Sprintf("有人%s", t.Title)
+		detailUrl = s.getMessageUrl(t)
+	case msg.TypeTopicFavorite:
+		title = "话题被收藏"
+		desc = fmt.Sprintf("有人%s", t.Title)
+		detailUrl = s.getMessageUrl(t)
+	case msg.TypeTopicRecommend:
+		title = "话题被推荐"
+		desc = fmt.Sprintf("你的%s", t.Title)
+		detailUrl = s.getMessageUrl(t)
+	default:
+		return
+	}
+
+	// 发送企业微信应用消息
+	err := WeComService.SendAppMessage(user.WeComUserId, siteTitle+" - "+title, desc, detailUrl)
+	if err != nil {
+		slog.Error("发送企业微信通知失败", slog.Any("err", err), slog.Int64("userId", t.UserId))
+	}
+}
+
+// getMessageUrl 获取消息对应的跳转链接
+func (s *messageService) getMessageUrl(t *models.Message) string {
+	msgType := msg.Type(t.Type)
+	switch msgType {
+	case msg.TypeTopicComment, msg.TypeArticleComment:
+		entityType := gjson.Get(t.ExtraData, "entityType")
+		entityId := gjson.Get(t.ExtraData, "entityId")
+		if entityType.String() == "article" {
+			return bbsurls.AbsUrl(fmt.Sprintf("/article/%d", entityId.Int()))
+		} else {
+			return bbsurls.AbsUrl(fmt.Sprintf("/topic/%d", entityId.Int()))
+		}
+	case msg.TypeCommentReply:
+		entityType := gjson.Get(t.ExtraData, "rootEntityType")
+		entityId := gjson.Get(t.ExtraData, "rootEntityId")
+		if entityType.String() == "article" {
+			return bbsurls.AbsUrl(fmt.Sprintf("/article/%d", entityId.Int()))
+		} else {
+			return bbsurls.AbsUrl(fmt.Sprintf("/topic/%d", entityId.Int()))
+		}
+	case msg.TypeTopicLike, msg.TypeTopicFavorite, msg.TypeTopicRecommend:
+		topicId := gjson.Get(t.ExtraData, "topicId")
+		if topicId.Exists() && topicId.Int() > 0 {
+			return bbsurls.AbsUrl(fmt.Sprintf("/topic/%d", topicId.Int()))
+		}
+	}
+	return bbsurls.AbsUrl("/user/messages")
 }

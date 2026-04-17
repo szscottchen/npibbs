@@ -36,18 +36,18 @@ func newUserCache() *userCache {
 			cache.WithExpireAfterAccess(30*time.Minute),
 		),
 		scoreRankCache: cache.NewLoadingCache(
-			func(key cache.Key) (value cache.Value, e error) {
-				users := repositories.UserRepository.Find(sqls.DB(), sqls.NewCnd().Desc("score").Limit(10))
-				if len(users) == 0 {
-					e = errors.New("数据不存在")
-				} else {
-					value = users
-				}
-				return
-			},
-			cache.WithMaximumSize(10),
-			cache.WithRefreshAfterWrite(10*time.Minute),
-		),
+		func(key cache.Key) (value cache.Value, e error) {
+			users := repositories.UserRepository.Find(sqls.DB(), sqls.NewCnd().Desc("score").Limit(5))
+			if len(users) == 0 {
+				e = errors.New("数据不存在")
+			} else {
+				value = users
+			}
+			return
+		},
+		cache.WithMaximumSize(10),
+		cache.WithRefreshAfterWrite(10*time.Minute),
+	),
 		checkInRankCache: cache.NewLoadingCache(
 			func(key cache.Key) (value cache.Value, e error) {
 				today := dates.GetDay(time.Now())
@@ -96,4 +96,8 @@ func (c *userCache) GetCheckInRank() []models.CheckIn {
 
 func (c *userCache) RefreshCheckInRank() {
 	c.checkInRankCache.Refresh(dates.GetDay(time.Now()))
+}
+
+func (c *userCache) RefreshScoreRank() {
+	c.scoreRankCache.Refresh("data")
 }

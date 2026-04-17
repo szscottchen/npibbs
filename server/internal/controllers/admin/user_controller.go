@@ -55,10 +55,17 @@ func (c *UserController) GetBy(id int64) *web.JsonResult {
 }
 
 func (c *UserController) AnyList() *web.JsonResult {
-	list, paging := services.UserService.FindPageByParams(params.NewQueryParams(c.Ctx).
+	queryParams := params.NewQueryParams(c.Ctx)
+	
+	// 单独处理username查询，避免GORM对数字字符串的类型转换问题
+	username := params.FormValue(c.Ctx, "username")
+	if len(username) > 0 {
+		queryParams.Cnd.Eq("username", username) // 直接使用字符串值，确保类型正确
+	}
+	
+	list, paging := services.UserService.FindPageByParams(queryParams.
 		EqByReq("id").
 		LikeByReq("nickname").
-		EqByReq("username").
 		EqByReq("type").
 		PageByReq().Desc("id"))
 	var itemList []map[string]interface{}

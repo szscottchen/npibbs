@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"errors"
+	"log"
 	"github.com/mlogclub/simple/sqls"
 	"github.com/mlogclub/simple/web/params"
 	"gorm.io/gorm"
@@ -96,4 +98,23 @@ func (r *userRepository) GetByUsername(db *gorm.DB, username string) *models.Use
 
 func (r *userRepository) GetByPhone(db *gorm.DB, phone string) *models.User {
 	return r.Take(db, "phone = ?", phone)
+}
+
+// GetByWeComUserId 通过企业微信ID获取用户
+func (r *userRepository) GetByWeComUserId(db *gorm.DB, wecomUserId string) *models.User {
+	var user models.User
+	result := db.Where("we_com_user_id = ?", wecomUserId).First(&user)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		log.Printf("查询用户失败: %v", result.Error)
+		return nil
+	}
+	return &user
+}
+
+func (r *userRepository) UpdateColumns(db *gorm.DB, id int64, columns map[string]interface{}) (err error) {
+	err = db.Model(&models.User{}).Where("id = ?", id).Updates(columns).Error
+	return
 }

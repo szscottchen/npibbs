@@ -1,32 +1,22 @@
 services:
-  mysql:
-    container_name: bbs-go-mysql
-    image: 'mysql:8.0'
-    environment:
-      TZ: Asia/Shanghai
-      MYSQL_DATABASE: bbsgo_db
-      MYSQL_USER: bbsgo
-      MYSQL_PASSWORD: 123456
-      MYSQL_ROOT_PASSWORD: 123456
+  tkdev:
+    container_name: tkdevbbs
+    build: .
+    image: tkdev:latest
     volumes:
-      - .docker-compose/mysql/data:/var/lib/mysql # 挂载数据件目录；如果非root账号执行，挂载目录必须是登录账号下目录
-    restart: always
-    healthcheck:
-      test: '/usr/bin/mysql --user=bbsgo --password=123456 bbsgo_db --execute "SHOW TABLES;"'
-      interval: 3s
-      timeout: 300s
-      retries: 100
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
-  bbsgo:
-    container_name: bbs-go
-    image: mlogclub/bbs-go:latest
-    depends_on:
-      mysql:
-        condition: service_healthy
+      - ./data:/app/bbs-go/data
+      - ./logs:/app/bbs-go/logs
     environment:
       BBSGO_ENV: prod
+      # 连接外部数据库配置，根据实际数据库地址修改
+      DB_HOST: localhost  # 或数据库服务器IP
+      DB_PORT: 3306
+      DB_USER: bbsgo
+      DB_PASSWORD: Tk*935920
+      DB_NAME: bbsgo_dev
     ports:
-      - 8082:8082
-      - 3000:3000
+      - 8082:8082  # 后端API端口
+      - 3000:3000  # 前台静态文件端口
     restart: on-failure
+    # 如需连接外部数据库，可能需要网络配置
+    network_mode: host  # 使用主机网络连接本地数据库

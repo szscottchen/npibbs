@@ -69,18 +69,9 @@
             <span>{{ comment.liked ? $t('component.comment.subList.liked') : $t('component.comment.subList.like') }}</span>
             <span v-if="comment.likeCount > 0">{{ comment.likeCount }}</span>
           </div>
+          <!-- 临时调试信息，正式使用时删除 -->
           <div
-            class="comment-action-item"
-            :class="{ active: reply.quoteId === comment.id }"
-            @click="switchShowReply(comment)"
-          >
-            <i class="iconfont icon-comment" />
-            <span>{{
-              reply.quoteId === comment.id ? $t('component.comment.subList.cancelReply') : $t('component.comment.subList.reply')
-            }}</span>
-          </div>
-          <div
-            v-if="user && user.id === localTopicUserId && valueTypes.length > 0"
+            v-if="user && user.id == localTopicUserId && valueTypes.length > 0"
             class="comment-action-item"
             @click="showValue(comment)"
           >
@@ -303,13 +294,13 @@ export default {
       }
       
       // 只有主贴发布人可以评价
-      if (this.user.id !== this.localTopicUserId) {
+      if (this.user.id != this.localTopicUserId) {
         useMsgError("只有主贴发布人可以评价价值");
         return;
       }
       
       // 不能评价自己的评论
-      if (this.user.id === comment.user.id) {
+      if (this.user.id == comment.user.id) {
         useMsgError("不能评价自己的评论");
         return;
       }

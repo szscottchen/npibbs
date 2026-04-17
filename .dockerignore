@@ -1,6 +1,6 @@
 server/.DS_Store
 server/bbs-go
-server/bbs-go.yaml
+# server/bbs-go.yaml  # 需要包含这个文件用于Docker构建
 server/bbs-go.prod.yaml
 server/bbs-go.dev.yaml
 server/bbs-go.test.yaml
@@ -16,6 +16,6 @@ site/.eslintcache
 
 admin/.DS_Store
 admin/node_modules
-admin/dist
+# admin/dist  # 需要包含这个目录用于Docker构建
 admin/dist-ssr
 admin/*.local

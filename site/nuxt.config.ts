@@ -5,6 +5,14 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src/',
   ssr: false,
+
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: true,
+    },
+  ],
+
   modules: [
     '@pinia/nuxt',
     '@vueuse/nuxt',
@@ -35,6 +43,8 @@ export default defineNuxtConfig({
   ],
 
   plugins: [
+    '~/plugins/wecom.client.js',
+    '~/plugins/api.ts'
   ],
 
   elementPlus: {
@@ -58,7 +68,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'BBS-GO',
+      title: 'TK-BBS',
       htmlAttrs: { class: 'theme-light has-navbar-fixed-top' },
       script: [
         {
@@ -103,5 +113,16 @@ export default defineNuxtConfig({
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
     lazy: false,
+  },
+  vite: {
+    server: {
+      hmr: {
+        protocol: 'ws',
+        host: 'tkaibbs.tkmold.com',
+        port: 8020
+      },
+      //开发环境测试企业微信允许访问
+      allowedHosts:['tkaibbs.tkmold.com']
+    }
   },
 })

@@ -4,15 +4,6 @@
   <footer class="footer">
     <div class="content container">
       <div>
-        <nuxt-link to="/about">
-          {{ $t("component.myFooter.about") }}
-        </nuxt-link>
-        &nbsp;
-        <nuxt-link to="/links">
-          {{ $t("component.myFooter.links") }}
-        </nuxt-link>
-      </div>
-      <div>
         Powered by
         <a href="https://bbs-go.com" target="_blank" class="light">BBS-GO</a>
       </div>

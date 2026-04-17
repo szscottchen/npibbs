@@ -35,10 +35,10 @@ func NewServer() {
 		AllowedHeaders:   []string{"*"},
 		ExposedHeaders:   []string{"Content-Length", "Content-Type"},
 	})
-	
+
 	// 应用CORS中间件
 	app.Use(corsHandler)
-	
+
 	// 确保OPTIONS方法被允许
 	app.AllowMethods(iris.MethodOptions)
 
@@ -57,6 +57,8 @@ func NewServer() {
 	app.HandleDir("/admin", "./admin")
 	// uploads
 	app.HandleDir("/uploads", "./uploads")
+	// static files
+	app.HandleDir("/static", "./static")
 	// site
 	app.HandleDir("/", "./site", iris.DirOptions{
 		ShowList:  false,
@@ -87,6 +89,8 @@ func NewServer() {
 		m.Party("/user-report").Handle(new(api.UserReportController))
 		m.Party("/install").Handle(new(api.InstallController))
 		m.Party("/sys-config").Handle(new(api.SysConfigController)) // 添加系统配置接口
+		m.Party("/wecom").Handle(new(api.WeComController))          // 添加企业微信接口
+		m.Party("/ai-sum").Handle(new(api.AISumController))         // 添加AI总结接口
 	})
 
 	// admin
@@ -114,6 +118,7 @@ func NewServer() {
 		m.Party("/operate-log").Handle(new(admin.OperateLogController))
 		m.Party("/user-report").Handle(new(admin.UserReportController))
 		m.Party("/forbidden-word").Handle(new(admin.ForbiddenWordController))
+		m.Party("/ai-sum").Handle(new(admin.AISumController)) // 添加AI总结管理接口
 	})
 
 	if err := app.Listen(":"+cast.ToString(conf.Port),

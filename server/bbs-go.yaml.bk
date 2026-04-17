@@ -1,0 +1,39 @@
+language: zh-CN
+baseURL: http://tkdevbbs.tkmold.com:8010
+port: 8082
+ipDataPath: ""
+allowedOrigins:
+- '*'
+installed: true
+logger:
+  filename: logs\bbs-go.log
+  maxSize: 10
+  maxAge: 10
+  maxBackups: 10
+db:
+  url: bbsgo:Tk935920@tcp(localhost:3306)/bbsgo_tst1?charset=utf8mb4&parseTime=True&multiStatements=true&loc=Local
+  maxIdleConns: 50
+  maxOpenConns: 200
+  connMaxIdleTimeSeconds: 300
+  connMaxLifetimeSeconds: 3600
+smtp:
+  host: ""
+  port: ""
+  username: ""
+  password: ""
+  ssl: false
+search:
+  indexPath: ""
+baiduSEO:
+  site: ""
+  token: ""
+smSEO:
+  site: ""
+  userName: ""
+  token: ""
+WeCom:
+  Enabled: true
+  CorpId: wxab3a4f1b8227d142
+  Secret: bdPDjSbVBbiUkCzacjCJZYqid1n4QkPc5OXdEq0wG7w
+  AgentId: "1000157"
+  RedirectUri: http://tkdevbbs.tkmold.com:8010/mobile/wecom-callback

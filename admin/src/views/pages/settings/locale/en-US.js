@@ -27,15 +27,13 @@ export default {
         siteNotification: 'Site Notification (HTML supported)',
         recommendTags: 'Recommended Tags',
         defaultNodeId: 'Default node for posting',
+        uploadPath: 'Please enter upload directory path, e.g.: uploads',
+        maxSizeMB: 'Please enter file size limit (MB)',
       },
       uploadPath: 'Upload Directory',
       maxSizeMB: 'File Size Limit (MB)',
       uploadPathHelp: 'Use forward slashes for file directories on all platforms',
       maxSizeMBHelp: 'Maximum file size limit (unit: MB)',
-      placeholder: {
-        uploadPath: 'Please enter upload directory path, e.g.: uploads',
-        maxSizeMB: 'Please enter file size limit (MB)',
-      },
       message: {
         submitSuccess: 'Submit successful',
       },

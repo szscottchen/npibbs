@@ -89,15 +89,16 @@ func (s *userBatchImportService) ImportUsersFromExcel(filePath string) (*models.
 		// 创建用户
 		err := s.createUserFromImportRow(importRow)
 		if err != nil {
-			// 记录错误
-			result.FailCount++
-			importErr := models.BatchImportError{
-				RowNumber:    rowNumber,
-				EmployeeID:   importRow.EmployeeID,
-				Nickname:     importRow.Nickname,
-				ErrorMessage: err.Error(),
-				ErrorTime:    time.Now().Unix(),
-			}
+		// 记录错误
+		result.FailCount++
+		importErr := models.BatchImportError{
+			RowNumber:    rowNumber,
+			EmployeeID:   importRow.EmployeeID,
+			WeComUserID:  importRow.WeComUserID,
+			Nickname:     importRow.Nickname,
+			ErrorMessage: err.Error(),
+			ErrorTime:    time.Now().Unix(),
+		}
 			result.Errors = append(result.Errors, importErr)
 
 			// 写入错误日志文件
@@ -113,7 +114,7 @@ func (s *userBatchImportService) ImportUsersFromExcel(filePath string) (*models.
 // parseRow 解析Excel行数据
 func (s *userBatchImportService) parseRow(row []string, rowNumber int) *models.BatchImportUserRow {
 	// 确保有足够的列
-	for len(row) < 9 {
+	for len(row) < 10 {
 		row = append(row, "")
 	}
 
@@ -128,6 +129,7 @@ func (s *userBatchImportService) parseRow(row []string, rowNumber int) *models.B
 		JobPosition:   strings.TrimSpace(row[6]),
 		CommunityRole: strings.TrimSpace(row[7]),
 		Nickname:      strings.TrimSpace(row[8]),
+		WeComUserID:   strings.TrimSpace(row[9]),
 	}
 }
 
@@ -149,6 +151,7 @@ func (s *userBatchImportService) createUserFromImportRow(row *models.BatchImport
 		BDepartment:   row.BDepartment,
 		Jobposition:   row.JobPosition,
 		CommunityRole: row.CommunityRole,
+		WeComUserId:   row.WeComUserID,
 		CreateTime:    time.Now().Unix(),
 		UpdateTime:    time.Now().Unix(),
 	}
@@ -249,10 +252,11 @@ func (s *userBatchImportService) getErrorLogPath() string {
 
 // writeErrorLog 写入错误日志
 func (s *userBatchImportService) writeErrorLog(logPath string, err models.BatchImportError) {
-	// 格式：employee_id,nickname,错误信息,错误时间
+	// 格式：employee_id,we_com_user_id,nickname,错误信息,错误时间
 	timeStr := time.Unix(err.ErrorTime, 0).Format("2006-01-02 15:04:05")
-	logLine := fmt.Sprintf("%s,%s,%s,%s\n",
+	logLine := fmt.Sprintf("%s,%s,%s,%s,%s\n",
 		err.EmployeeID,
+		err.WeComUserID,
 		err.Nickname,
 		err.ErrorMessage,
 		timeStr,
@@ -293,6 +297,7 @@ func (s *userBatchImportService) GenerateTemplate(filePath string) error {
 		"工作岗位(job_position)",
 		"社区角色(community_role)",
 		"昵称(nickname)*必填",
+		"企业微信用户ID(we_com_user_id)",
 	}
 
 	for i, header := range headers {
@@ -311,6 +316,7 @@ func (s *userBatchImportService) GenerateTemplate(filePath string) error {
 		"高级工程师",
 		"技术专家",
 		"张三",
+		"WangWu",
 	}
 
 	for i, data := range exampleData {

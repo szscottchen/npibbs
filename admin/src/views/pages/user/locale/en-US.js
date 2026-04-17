@@ -47,6 +47,7 @@ export default {
             failCount: 'Failed',
             rowNumber: 'Row',
             employeeId: 'Employee ID',
+            weComUserId: 'WeCom User ID',
             nickname: 'Nickname',
             errorMessage: 'Error Message',
         },

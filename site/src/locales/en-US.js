@@ -1,4 +1,15 @@
 export default {
+  ai_summary: {
+    title: "AI Summary",
+    generate: "Generate",
+    generating: "Generating...",
+    empty: "Click the button above to generate AI summary",
+    copy: "Copy",
+    copy_success: "Copied",
+    copy_failed: "Copy failed",
+    generate_success: "Generated successfully",
+    generate_failed: "Generation failed",
+  },
   common: {
     noData: "No data available",
     createBtn: {
@@ -184,6 +195,7 @@ export default {
         reply: "Reply",
         cancelReply: "Cancel reply",
         publishSuccess: "Published successfully",
+        loadMore: "Load more",
       },
       subList: {
         replyTo: "Reply to",
@@ -353,6 +365,17 @@ export default {
       setBackground: "Set Background",
       backgroundSuccess: "Background set successfully",
     },
+    chat: {
+      newMessages: "new messages",
+      justNow: "just now",
+      minutesAgo: "{n} minutes ago",
+      hoursAgo: "{n} hours ago",
+      daysAgo: "{n} days ago",
+      send: "Send",
+      inputPlaceholder: "Type a message...",
+      commentDetail: "Comment Detail",
+      emojiComingSoon: "Emoji feature coming soon",
+    },
   },
   pages: {
     user: {
@@ -481,6 +504,10 @@ export default {
         likeSuccess: "Liked successfully",
         favorite: "Favorite",
         favoriteSuccess: "Favorited successfully",
+        favorited: "Favorited",
+        needAHand: "Call for Help",
+        topic: "Topic",
+        comment: "Comment",
       },
       create: {
         needEmailTitle: "Please verify your email first",
@@ -547,7 +574,7 @@ export default {
     },
     about: {
       title: "About Us",
-      desc: "BBS-GO is a modern, high-performance open source community forum system. Our design philosophy is lightweight, efficient, easy to extend and deploy, aiming to provide developers and community managers with a powerful online community solution.",
+      desc: "TK-BBS is developed based BBS-GO, which is a open source community forum system. Its design philosophy is lightweight, efficient, easy to extend and deploy, aiming to provide developers and community managers with a powerful online community solution.",
       featuresTitle: "Core Features",
       feature1Title: "High Performance:",
       feature1: " Ensures smooth user experience even under high load.",

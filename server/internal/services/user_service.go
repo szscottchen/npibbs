@@ -29,6 +29,11 @@ import (
 	"bbs-go/internal/repositories"
 )
 
+// GetByWeComUserId 通过企业微信ID获取用户
+func (s *userService) GetByWeComUserId(wecomUserId string) *models.User {
+	return repositories.UserRepository.GetByWeComUserId(sqls.DB(), wecomUserId)
+}
+
 // 邮箱验证邮件有效期（小时）
 const emailVerifyExpireHour = 24
 
@@ -641,6 +646,7 @@ func (s *userService) addScore(userId int64, score int, sourceType, sourceId, de
 	})
 	if err == nil {
 		cache.UserCache.Invalidate(userId)
+		cache.UserCache.RefreshScoreRank() // 刷新积分排行缓存
 	}
 	return err
 }

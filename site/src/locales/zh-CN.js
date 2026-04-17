@@ -1,4 +1,15 @@
 export default {
+  ai_summary: {
+    title: "AI智能总结",
+    generate: "生成总结",
+    generating: "生成中...",
+    empty: "点击上方按钮生成AI总结",
+    copy: "复制",
+    copy_success: "复制成功",
+    copy_failed: "复制失败",
+    generate_success: "生成成功",
+    generate_failed: "生成失败",
+  },
   common: {
     noData: "暂无数据",
     createBtn: {
@@ -183,6 +194,7 @@ export default {
         reply: "评论",
         cancelReply: "取消评论",
         publishSuccess: "发布成功",
+        loadMore: "查看更多",
       },
       subList: {
         replyTo: "回复",
@@ -351,6 +363,17 @@ export default {
       setBackground: "设置背景",
       backgroundSuccess: "背景设置成功",
     },
+    chat: {
+      newMessages: "条新消息",
+      justNow: "刚刚",
+      minutesAgo: "{n}分钟前",
+      hoursAgo: "{n}小时前",
+      daysAgo: "{n}天前",
+      send: "发送",
+      inputPlaceholder: "请输入消息...",
+      commentDetail: "评论详情",
+      emojiComingSoon: "表情功能即将上线",
+    },
   },
   pages: {
     user: {
@@ -477,7 +500,10 @@ export default {
         likeSuccess: "点赞成功",
         favorite: "收藏",
         favoriteSuccess: "收藏成功",
+        favorited: "已收藏",
         needAHand: "呼叫支援",
+        topic: "话题",
+        comment: "评论",
       },
       create: {
         needEmailTitle: "请先验证邮箱",
@@ -537,7 +563,7 @@ export default {
     },
     about: {
       title: "关于我们",
-      desc: "BBS-GO 是一款现代化的、高性能的开源社区论坛系统。我们的设计哲学是轻量、高效、易于扩展和部署，旨在为开发者和社区管理者提供一个强大的在线社区解决方案。",
+      desc: "TK-BBS基于BBS-GO 开源社区论坛系统进一步开发。BBS-GO设计哲学是轻量、高效、易于扩展和部署，旨在为开发者和社区管理者提供一个强大的在线社区解决方案。",
       featuresTitle: "核心特性",
       feature1Title: "高性能：",
       feature1: "确保在高负载下也能提供流畅的用户体验。",

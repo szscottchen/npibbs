@@ -6,7 +6,7 @@
       :params="{ entityType, entityId }"
       url="/api/comment/comments"
     >
-      <div v-for="comment in results" :key="comment.id" class="comment">
+      <div v-for="comment in processComments(results)" :key="comment.id" class="comment">
         <div class="comment-item-left">
           <my-avatar :user="comment.user" :size="30" has-border />
         </div>
@@ -70,7 +70,7 @@
               <span>{{ reply.commentId === comment.id ? t('component.comment.list.cancelReply') : t('component.comment.list.reply') }}</span>
             </div>
             <div
-              v-if="userStore.user && userStore.user.id === topicUserId && valueTypes.length > 0"
+              v-if="userStore.user && userStore.user.id == topicUserId && valueTypes.length > 0"
               class="comment-action-item"
               @click="showValue(comment)"
             >
@@ -221,6 +221,40 @@ const loadTopicUser = async () => {
   }
 };
 
+// 处理评论数据，将子评论挂载到父评论下
+const processComments = (results) => {
+  if (!results || results.length === 0) return [];
+
+  const mainComments = [];
+  const repliesMap = new Map();
+
+  // 第一遍：分离主评论和子评论
+  results.forEach(comment => {
+    if (comment.quoteId) {
+      // 这是子评论，需要挂载到父评论下
+      if (!repliesMap.has(comment.quoteId)) {
+        repliesMap.set(comment.quoteId, []);
+      }
+      repliesMap.get(comment.quoteId).push(comment);
+    } else {
+      // 这是主评论
+      mainComments.push(comment);
+    }
+  });
+
+  // 第二遍：将子评论挂载到对应的主评论
+  mainComments.forEach(comment => {
+    if (repliesMap.has(comment.id)) {
+      comment.replies = {
+        results: repliesMap.get(comment.id),
+        hasMore: false
+      };
+    }
+  });
+
+  return mainComments;
+};
+
 // 显示价值评价对话框
 const showValue = (comment) => {
   if (!userStore.user) {
@@ -229,7 +263,7 @@ const showValue = (comment) => {
   }
   
   // 只有主贴发布人可以评价价值
-  if (userStore.user.id !== topicUserId.value) {
+  if (userStore.user.id != topicUserId.value) {
     useMsgError("只有主贴发布人可以评价价值");
     return;
   }

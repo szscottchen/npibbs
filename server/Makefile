@@ -5,9 +5,17 @@ build:
 	@echo "Building..."
 	@go build -v -o bbs-go main.go
 
+build-tkdev:
+	@echo "Building tkdev..."
+	@go build -v -o tkdev main.go
+
 buildlinux:
 	@echo "Building..."
 	@GOOS=linux GOARCH=amd64 go build
+
+build-tkdev-linux:
+	@echo "Building tkdev for Linux..."
+	@GOOS=linux GOARCH=amd64 go build -v -o tkdev main.go
 
 # Run the application
 run:

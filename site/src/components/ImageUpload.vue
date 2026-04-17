@@ -35,25 +35,24 @@
         {{ file.filename }}
       </div>
     </div>
-    <div
+    <label
       v-show="previewFiles.length < limit"
       class="add-image-btn"
       :style="{ width: size, height: size }"
-      @click="onClick($event)"
     >
       <input
         ref="currentInput"
         :accept="accept"
         type="file"
         multiple
-        @input="onInput"
+        @change="onInput"
       />
       <div class="add-image-btn-wrapper">
         <slot name="add-image-button">
-          <i class="iconfont icon-add" style="font-size: 15px; opacity: 0.4" />
+          <i class="iconfont icon-add" style="font-size: 24px; opacity: 0.6"></i>
         </slot>
       </div>
-    </div>
+    </label>
   </div>
 </template>
 
@@ -96,30 +95,40 @@ const loading = ref(false);
 watch(
   () => props.modelValue,
   (newModelValue) => {
-    // 更新 fileList
-    fileList.value = Array.isArray(newModelValue) ? [...newModelValue] : [];
+    // 只有当外部值与内部值不同时才更新，避免循环
+    const newList = Array.isArray(newModelValue) ? [...newModelValue] : [];
+    if (JSON.stringify(newList) !== JSON.stringify(fileList.value)) {
+      // 更新 fileList
+      fileList.value = newList;
 
-    // 更新 previewFiles
-    previewFiles.value = fileList.value.map((item) => ({
-      name: item.name || "unknown", // 假设每个文件对象有 name 属性
-      url: item.url, // 假设每个文件对象有 url 属性
-      progress: 100, // 已上传完成
-      deleted: false,
-      size: item.size || 0, // 假设每个文件对象有 size 属性
-    }));
+      // 更新 previewFiles
+      previewFiles.value = fileList.value.map((item) => ({
+        name: item.name || item.filename || "unknown",
+        url: item.url || item.preview,
+        progress: 100,
+        deleted: false,
+        size: item.size || 0,
+        isImage: item.isImage,
+        fileExt: item.fileExt,
+      }));
+    }
   },
-  { immediate: true } // 立即执行一次，确保初始化时同步
+  { immediate: true }
 );
 
 const onClick = () => {
+  console.log('点击添加图片按钮')
   if (currentInput.value) {
-    currentInput.value.dispatchEvent(new MouseEvent("click"));
+    currentInput.value.click()
   }
 };
 
 const onInput = (e) => {
+  console.log('文件选择事件:', e.target.files)
   const files = e.target.files;
-  addFiles(files);
+  if (files && files.length > 0) {
+    addFiles(files);
+  }
 };
 
 const addFiles = (files) => {
@@ -154,23 +163,20 @@ const addFiles = (files) => {
 const uploadFile = (file, index, length) => {
   const formData = new FormData();
   formData.append("file", file, file.name);
-  return useHttp("/api/upload", {
-    method: "POST",
-    body: formData,
-  });
+  return useHttpPost("/api/upload", formData);
 };
 const uploadFiles = (promiseList) => {
   loading.value = true;
 
   Promise.all(promiseList).then(
     (resList) => {
+      console.log('上传成功:', resList)
       // 请求响应后，更新到 100%
-      // 使用新的数组替换previewFiles.value，而不是直接修改每个项
       previewFiles.value = previewFiles.value.map(item => ({
         ...item,
         progress: 100
       }));
-      
+
       // 添加上传结果到fileList
       resList.forEach((item) => {
         fileList.value.push({
@@ -181,19 +187,22 @@ const uploadFiles = (promiseList) => {
           fileExt: item.fileExt,
         });
       });
-      
+
       if (currentInput.value) {
         currentInput.value.value = "";
       }
       loading.value = false;
-      
-      // 使用nextTick延迟触发更新，避免无限递归
+
+      // 使用nextTick延迟触发更新
       nextTick(() => {
-        emit("update:modelValue", [...fileList.value]);
+        const result = [...fileList.value]
+        console.log('触发 update:modelValue:', result)
+        emit("update:modelValue", result);
       });
     },
     (e) => {
-      useMsgError(e.message || e);
+      console.error('上传失败:', e)
+      useMsgError(e.message || e || '上传失败');
 
       if (currentInput.value) {
         currentInput.value.value = "";
@@ -413,14 +422,23 @@ defineExpose({
   }
 
   .add-image-btn {
-    cursor: pointer;
-    border: 1px solid var(--border-color);
-    border-radius: 2px;
+    border: 1px dashed var(--border-color);
+    border-radius: 4px;
     position: relative;
+    background: #fafafa;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     input[type="file"] {
-      cursor: pointer;
-      display: none;
+      position: absolute;
+      opacity: 0;
+      width: 0.1px;
+      height: 0.1px;
+      overflow: hidden;
+      z-index: -1;
     }
 
     .add-image-btn-wrapper {
@@ -428,6 +446,12 @@ defineExpose({
       align-items: center;
       justify-content: center;
       height: 100%;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    &:active {
+      background: #e8e8e8;
     }
   }
 }

@@ -70,6 +70,8 @@ type Config struct {
 	Search         SearchConfig   `yaml:"search"`         // 搜索配置
 	BaiduSEO       BaiduSEOConfig `yaml:"baiduSEO"`       // 百度SEO配置
 	SmSEO          SmSEOConfig    `yaml:"smSEO"`          // 神马搜索SEO配置
+	WeCom          WeComConfig    `yaml:"WeCom"`          // 企业微信配置
+	AI             AIConfig       `yaml:"ai"`             // AI服务配置
 }
 
 type LoggerConfig struct {
@@ -104,6 +106,25 @@ type SmSEOConfig struct {
 	Site     string `yaml:"site"`
 	UserName string `yaml:"userName"`
 	Token    string `yaml:"token"`
+}
+
+// 企业微信配置
+type WeComConfig struct {
+	Enabled     bool   `yaml:"Enabled"`     // 是否启用
+	CorpId      string `yaml:"CorpId"`      // 企业ID
+	Secret      string `yaml:"Secret"`      // 应用Secret
+	AgentId     string `yaml:"AgentId"`     // 应用AgentId
+	RedirectUri string `yaml:"RedirectUri"` // 回调地址
+}
+
+// AI服务配置
+type AIConfig struct {
+	Enabled    bool   `yaml:"enabled"`    // 是否启用AI服务
+	Provider   string `yaml:"provider"`   // AI服务提供商：openai、azure、deepseek
+	APIKey     string `yaml:"apiKey"`     // API密钥
+	Model      string `yaml:"model"`      // 模型名称
+	Endpoint   string `yaml:"endpoint"`   // 端点地址（Azure专用）
+	APIVersion string `yaml:"apiVersion"` // API版本（Azure专用）
 }
 
 func ReadConfig() (cfg *Config, exists bool, err error) {

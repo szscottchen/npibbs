@@ -93,17 +93,22 @@
               <a-table-column
                 :title="$t('pages.user.batchImport.rowNumber')"
                 data-index="rowNumber"
-                :width="100"
+                :width="80"
               />
               <a-table-column
                 :title="$t('pages.user.batchImport.employeeId')"
                 data-index="employeeId"
-                :width="150"
+                :width="120"
+              />
+              <a-table-column
+                :title="$t('pages.user.batchImport.weComUserId')"
+                data-index="weComUserId"
+                :width="120"
               />
               <a-table-column
                 :title="$t('pages.user.batchImport.nickname')"
                 data-index="nickname"
-                :width="150"
+                :width="120"
               />
               <a-table-column
                 :title="$t('pages.user.batchImport.errorMessage')"

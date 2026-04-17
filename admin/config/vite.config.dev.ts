@@ -8,6 +8,8 @@ export default mergeConfig(
     server: {
       port: 8080,
       open: true,
+      //开发环境允许所有主机访问
+      allowedHosts: true,
       fs: {
         strict: true,
       },
