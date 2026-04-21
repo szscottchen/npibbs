@@ -14,10 +14,10 @@ Installed: false # 是否已完成安装
 # 企业微信配置（存储在系统配置表中）
 WeCom:
   Enabled: true
-  CorpId: "wxab3a4f1b8227d142"
-  Secret: "bdPDjSbVBbiUkCzacjCJZYqid1n4QkPc5OXdEq0wG7w"
-  AgentId: "1000157"
-  RedirectUri: "http://tkdevbbs.tkmold.com"
+  CorpId: 根据企业微信配置获取
+  Secret: 根据企业微信配置获取
+  AgentId: 根据企业微信配置获取
+  RedirectUri: 根据企业微信配置获取
 
 
 # 日志配置
@@ -32,7 +32,7 @@ Logger:
 # Docker环境：如果数据库在宿主机，使用 host.docker.internal:3306
 # 或者使用主机网络模式，直接连接 localhost:3306
 DB:
-  Url: bbsgo:Tk*935920@tcp(localhost:3306)/bbsgo_dev?charset=utf8mb4&parseTime=True&multiStatements=true&loc=Local
+  Url: username:password@tcp(localhost:3306)/bbsgo_db?charset=utf8mb4&parseTime=True&multiStatements=true&loc=Local
   MaxIdleConns: 50
   MaxOpenConns: 200
 

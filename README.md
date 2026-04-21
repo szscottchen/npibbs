@@ -1,50 +1,35 @@
 > 感谢您的支持与鼓励！如果您喜欢这个开源项目，不妨给它点个⭐️⭐️⭐️，您的星星是我们前进的动力 🙏🙏🙏
 
-## 项目地址
-
-- 演示站：[https://bbs.bbs-go.com](https://bbs.bbs-go.com)
-- 文档地址：[https://bbs-go.com](https://bbs-go.com)
-- 问题反馈: [https://bbs.bbs-go.com/topics/node/3](https://bbs.bbs-go.com/topics/node/3)
-- Github: [https://github.com/mlogclub/bbs-go](https://github.com/mlogclub/bbs-go)
-- Gitee: [https://gitee.com/mlogclub/bbs-go](https://gitee.com/mlogclub/bbs-go)
-
-## 联系我
-
-### 用户交流群
-
-![BBS-GO用户交流群](docs/images/qq.png)
-
-### 加我微信
-
-![微信](docs/images/wechat.png)
-
-## 付费服务
-
-付费是为了项目能够更好的生存下去，请谅解。项目将一如既往的开源下去~
-
-| 服务     | 价格  | 服务内容                                         |
-| -------- | ----- | ------------------------------------------------ |
-| 商用授权 | ￥1628 | 提供bbs-go商业使用授权                             |
-| 付费咨询 | 面议  | 付费答疑解惑，协助解决问题                       |
-| 功能定制 | 面议  | 接受各种功能定制，只有你想不到的没有我们做不到的 |
 
 ## 介绍
 
-`bbs-go` 是一个基于 Go 语言开发的开源社区论坛系统。它的设计旨在提供轻量、高效的社区讨论平台，支持现代化的 Web 技术栈，并且易于扩展和部署。bbs-go 项目采用模块化架构，能够与其他服务和前端框架无缝集成，适合各种规模的在线社区。
+本项目是基于`bbs-go` （一个基于 Go 语言开发的开源社区论坛系统）开发的讨论区，可以用于研发等组织内部话题的讨论和分享。关于bbs-go的详细情况，请参照：
+- Github: [https://github.com/mlogclub/bbs-go](https://github.com/mlogclub/bbs-go)
+- Gitee: [https://gitee.com/mlogclub/bbs-go](https://gitee.com/mlogclub/bbs-go)
 
-项目的主要特点包括：
+本项目的源代码存放地址是：
+https://github.com/szscottchen/npibbs
+本项目遵从原bbs-go的GPL3.0协议进行开源。
 
-- **高性能**：基于 Go 语言的并发特性，能够在高负载下保持良好的性能表现。
-- **灵活性**：支持自定义配置、插件扩展，易于适应不同需求。
-- **简单易用**：提供简洁的管理后台，方便社区管理员管理论坛内容和用户。
-- **支持 MySQL 数据库**：提供对常见数据库的支持，确保数据存储的可靠性和稳定性。
-- **响应式设计**：前端使用现代化的技术，能够在移动设备和桌面设备上提供良好的用户体验。
+本项目在bbs-go基础上，侧重于一个企业内部研发部门的讨论和交流而做了增强。相比bbs-go，增加的内容主要有：
 
-项目主要面向开发者和社区管理者，适合搭建技术讨论、兴趣分享等类型的社区论坛。
+- 图片和文章等附件部署在应用服务器所在的机器，这样更照顾内部研发部门的信息安全考量。
+- 后台管理中增加批量导入方式建立用户的功能，导入模版基于一般企业的组织形式设计。
+- 增加了一种新的发帖类型“呼叫支援”，也即呼救。这样发表话题的人可以呼唤更多人对一个关键话题或设想进行讨论，题主可以对认为有帮助有价值的跟帖进行加分，增加相关回帖用户的积分。
+- 增加了企业微信端的访问话题和跟进话题的功能，这样用户可以在企业微信端使用论坛。
+- 每个话题里增加了AI总结功能，可以对话题进行总结，提取讨论的闪光点，帮助找出观点和创意。
+
 
 ![bbs-go功能简介](docs/images/features.jpg)
 
-## 模块
+## 系统结构和技术栈
+
+本项目基于 **bbs-go** ，采用典型的前后端分离架构。
+
+bbs-go/
+├── server/          # 后端服务 (Go)
+├── site/            # 前端站点 (Nuxt.js + Vue 3)
+├── admin/           # 管理后台 (Vue 3 + Arco Design)
 
 ### server
 
@@ -82,16 +67,22 @@
 - vue.js ([https://vuejs.org](https://vuejs.org)) 渐进式 JavaScript 框架
 - element-ui ([https://element.eleme.cn](https://element.eleme.cn)) 饿了么开源的基于 vue.js 的前端库
 
-## 功能预览
+## 功能介绍
 
-![首页.png](https://s2.loli.net/2022/04/12/DpvPwB9dlQ6Chef.png)
-![发帖.png](https://s2.loli.net/2022/04/12/KC8eXfE6sDLq34V.png)
-![发动态.png](https://s2.loli.net/2022/04/12/14pMPuGjEU6kiWV.png)
-![个人中心.png](https://s2.loli.net/2022/04/12/1PVNjMh9nUAXsl8.png)
-![手机版.png](https://s2.loli.net/2022/04/12/mowWb78CGIaH6T2.png)
-![后台首页.png](https://s2.loli.net/2022/04/12/ErX2BLTnh7ldz8D.png)
-![后台配置.png](https://s2.loli.net/2022/04/12/PwK6aC74XEZlIOL.png)
+- **话题管理** - 发帖、回帖、节点分类
+- **文章管理** - 文章发布
+- **评论系统** - 评论功能
+- **AI 总结**  - 话题智能总结
+- **企业微信** - 企业微信集成
+- **搜索功能** - 全文搜索
+- **用户中心** - 个人设置、用户列表、批量导入
+- **话题管理** - 话题审核、节点管理
+- **文章管理** - 文章审核、标签管理
+- **系统设置** - 菜单、角色、API 管理
+
+## 安装和部署
+
+## 联系方式
 
 ## Contributors
 
-<a href="https://github.com/mlogclub/bbs-go/graphs/contributors"><img src="https://opencollective.com/bbs-go/contributors.svg?width=890&button=false" /></a>
