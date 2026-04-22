@@ -112,7 +112,7 @@ For the first login, access the browser interface at http://<server address and 
 <cayuanyuan@aliyun.com>
 
 ### QQ
-开发者QQ](docs/images/qq.png)
+![开发者QQ](docs/images/qq.png)
 
 ### WeChat
 

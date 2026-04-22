@@ -113,7 +113,7 @@ bbs-go/
 <cayuanyuan@aliyun.com>
 
 ### QQ群
-开发者QQ](docs/images/qq.png)
+![开发者QQ](docs/images/qq.png)
 
 ### 微信
 
